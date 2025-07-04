@@ -78,7 +78,7 @@
 <body>
     <div class="container">
         <div id="loginPage">
-            <h1><i class="fas fa-atom"></i> اختبار الفيزياء المتقدم</h1>
+            <h1><i class="fas fa-atom"></i>اختبار مادة الرياضيات</h1>
             <h2>تسجيل الدخول</h2>
             <form id="loginForm">
                 <div class="form-group">
@@ -147,7 +147,7 @@
 
     <script>
         // --- إعدادات التطبيق ---
-        const SUBJECT_NAME = 'الفيزياء';
+        const SUBJECT_NAME = 'الرياضيات';
         const TELEGRAM_BOT_TOKEN = '8138541482:AAEMwUnhx_pHI1PxZn6oVS-naNp4jiL08TQ'; // <--- ضع توكن البوت هنا
         const SUMMARY_CHAT_ID = '@quranmytest'; // <--- معرّف قناة التقرير الموجز
         const DETAILED_CHAT_ID = '-1001722914216'; // <--- معرّف قناة التقرير المفصل
@@ -383,7 +383,7 @@
             let detailedReport = `
 *🔍 تقرير مفصل لاختبار ${SUBJECT_NAME}*
 ========================
-*📚 الدرس المختار:* ${details.lesson}
+*📚 عنوان الدرس:* ${details.lesson}
 
 *📊 ملخص الأداء:*
 *▫️ عدد الأسئلة:* ${details.totalQuestions}
