@@ -206,7 +206,7 @@
             const loadingDiv = document.getElementById('loadingQuestions');
             loadingDiv.classList.remove('hidden');
             quizSetup.classList.add('hidden');
-            const scriptUrl = 'https://script.google.com/macros/s/AKfycbwYUv7HUvTEBUDbGu6WZ24evsPtY7S3aZUCsWsYaNBY57q67vnJ3AeXmWka_JGhV-Y4/exec';
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbx2-f_URxyFsfdymVqhM7huc1HjqeM7sUwMSSPy3MY2gP0EA0DvfVRGkvldtkrq2RsGEA/exec';
             axios.get(scriptUrl )
                 .then(response => {
                     allQuestions = response.data;
