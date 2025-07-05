@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>اختبار مادة الرياضيات</title>
+    <title>اختبار الرياضيات المتقدم</title>
     
     <!-- Google Fonts: Cairo -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <!-- Axios and Font Awesome -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- MathJax -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <style>
@@ -23,62 +22,157 @@
             --primary-color: #4a90e2; --primary-hover: #357abd; --secondary-color: #34495e;
             --success-color: #27ae60; --error-color: #c0392b; --light-bg: #f4f7f9;
             --white: #ffffff; --gray-border: #e0e0e0; --dark-text: #333333;
-            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08 ); --border-radius: 12px;
+            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); --border-radius: 12px;
+            --math-color: #d63384; --math-bg: #f8f9fa;
         }
         body {
-            font-family: 'Cairo', 'Tahoma', sans-serif; background: linear-gradient(to bottom right, var(--light-bg), #e9edf1);
+            font-family: 'Cairo', 'Tahoma', sans-serif; 
+            background: linear-gradient(to bottom right, var(--light-bg), #e9edf1);
             margin: 0; padding: 20px; color: var(--dark-text); line-height: 1.7;
+            font-weight: 400;
         }
         .container {
             max-width: 800px; margin: 0 auto; padding: 30px; background-color: var(--white);
             box-shadow: var(--box-shadow); border-radius: var(--border-radius);
         }
-        h1, h2, h3 { color: var(--secondary-color); text-align: center; margin-bottom: 25px; }
-        h1 { font-size: 2.5rem; font-weight: 700; }
+        h1, h2, h3 { 
+            color: var(--secondary-color); 
+            text-align: center; 
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+        h1 { font-size: 2.5rem; }
         h2 { font-size: 2rem; color: var(--primary-color); }
         h3 { font-size: 1.6rem; }
         input, select {
             width: 100%; padding: 12px 15px; border: 1px solid var(--gray-border);
-            border-radius: 8px; font-size: 16px; font-family: 'Cairo', sans-serif; transition: all 0.3s;
+            border-radius: 8px; font-size: 16px; font-family: 'Cairo', sans-serif; 
+            transition: all 0.3s; margin-bottom: 15px;
         }
-        input:focus, select:focus { border-color: var(--primary-color); outline: none; box-shadow: 0 0 8px rgba(74, 144, 226, 0.3); }
+        input:focus, select:focus { 
+            border-color: var(--primary-color); 
+            outline: none; 
+            box-shadow: 0 0 8px rgba(74, 144, 226, 0.3); 
+        }
         button {
-            background: linear-gradient(45deg, var(--primary-color), #5aa5ff); color: var(--white);
-            border: none; padding: 14px 20px; border-radius: 8px; cursor: pointer;
-            font-size: 18px; font-family: 'Cairo', sans-serif; font-weight: 700;
-            width: 100%; margin-top: 15px; transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1); position: relative;
+            background: linear-gradient(45deg, var(--primary-color), #5aa5ff); 
+            color: var(--white); border: none; padding: 14px 20px; 
+            border-radius: 8px; cursor: pointer; font-size: 18px; 
+            font-family: 'Cairo', sans-serif; font-weight: 600; width: 100%; 
+            margin-top: 15px; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-        button:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        button:hover:not(:disabled) { 
+            transform: translateY(-3px); 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+            background: linear-gradient(45deg, var(--primary-hover), #4a90e2);
+        }
         button:disabled { background: #bdc3c7; cursor: not-allowed; }
-        .math-expression, .math-answer { direction: ltr; display: inline-block; vertical-align: middle; }
+        
+        /* تحسينات لعرض الرموز الرياضية */
+        .math-expression, .math-answer { 
+            direction: ltr; 
+            display: inline-block; 
+            vertical-align: middle;
+            color: var(--math-color);
+            background-color: var(--math-bg);
+            padding: 2px 5px;
+            border-radius: 4px;
+            margin: 2px 0;
+            font-family: 'Times New Roman', Times, serif;
+        }
         .question {
             background-color: var(--white); padding: 25px; border-radius: var(--border-radius);
-            margin-bottom: 15px; border: 1px solid var(--gray-border); border-left: 5px solid var(--primary-color);
+            margin-bottom: 15px; border: 1px solid var(--gray-border); 
+            border-left: 5px solid var(--primary-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
         .option-label {
             display: flex; align-items: center; padding: 15px; background-color: var(--light-bg);
-            border-radius: 8px; cursor: pointer; border: 1px solid var(--gray-border); transition: all 0.2s ease-in-out;
+            border-radius: 8px; cursor: pointer; border: 1px solid var(--gray-border); 
+            transition: all 0.2s ease-in-out; margin-bottom: 10px;
         }
-        .option-label:hover { transform: translateX(-5px); border-color: var(--primary-color); background-color: var(--white); }
-        .option-text { flex-grow: 1; margin-right: 15px; direction: ltr; text-align: left; }
-        .options input[type="radio"] { margin-left: 10px; width: auto; transform: scale(1.2); }
+        .option-label:hover { 
+            transform: translateX(-5px); 
+            border-color: var(--primary-color); 
+            background-color: var(--white); 
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        }
+        .option-text { 
+            flex-grow: 1; 
+            margin-right: 15px; 
+            direction: ltr; 
+            text-align: left;
+            font-size: 1.05rem;
+        }
+        .options input[type="radio"] { 
+            margin-left: 10px; 
+            width: auto; 
+            transform: scale(1.2); 
+        }
         .hidden { display: none !important; }
-        .progress-bar { height: 12px; background-color: var(--gray-border); border-radius: 6px; margin-top: 10px; overflow: hidden; }
-        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary-color), #5aa5ff); width: 0%; transition: width 0.5s ease-in-out; border-radius: 6px; }
+        .progress-bar { 
+            height: 12px; background-color: var(--gray-border); 
+            border-radius: 6px; margin-top: 10px; overflow: hidden; 
+            margin-bottom: 20px;
+        }
+        .progress-bar-fill { 
+            height: 100%; background: linear-gradient(90deg, var(--primary-color), #5aa5ff); 
+            width: 0%; transition: width 0.5s ease-in-out; border-radius: 6px; 
+        }
         .correct { border-left-color: var(--success-color); }
         .incorrect { border-left-color: var(--error-color); }
-        .error { color: var(--error-color); text-align: center; padding: 12px; background-color: rgba(192, 57, 43, 0.1); border-radius: 8px; margin: 10px 0; font-weight: 700; }
-        .loading { text-align: center; font-size: 1.2rem; margin: 40px 0; color: var(--secondary-color); }
+        .error { 
+            color: var(--error-color); text-align: center; padding: 12px; 
+            background-color: rgba(192, 57, 43, 0.1); border-radius: 8px; 
+            margin: 10px 0; font-weight: 600; 
+        }
+        .loading { 
+            text-align: center; font-size: 1.2rem; margin: 40px 0; 
+            color: var(--secondary-color); font-weight: 600;
+        }
         .loading i { margin-right: 10px; animation: spin 1.5s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         #answersReview .question { margin-bottom: 20px; }
+        
+        /* تحسينات للرموز الرياضية في الأسئلة */
+        .question-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        /* تحسينات للنتائج */
+        .result {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        
+        /* تحسينات للزر السابق والتالي */
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .btn-group button {
+            flex: 1;
+        }
+        
+        /* تحسينات للصيغ الرياضية المعقدة */
+        mjx-container[jax="CHTML"] {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 2px 0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div id="loginPage">
-            <h1><i class="fas fa-atom"></i>اختبار مادة الرياضيات</h1>
+            <h1><i class="fas fa-square-root-alt"></i> اختبار الرياضيات المتقدم</h1>
             <h2>تسجيل الدخول</h2>
             <form id="loginForm">
                 <div class="form-group">
@@ -148,9 +242,9 @@
     <script>
         // --- إعدادات التطبيق ---
         const SUBJECT_NAME = 'الرياضيات';
-        const TELEGRAM_BOT_TOKEN = '8138541482:AAEMwUnhx_pHI1PxZn6oVS-naNp4jiL08TQ'; // <--- ضع توكن البوت هنا
-        const SUMMARY_CHAT_ID = '@quranmytest'; // <--- معرّف قناة التقرير الموجز
-        const DETAILED_CHAT_ID = '-1001722914216'; // <--- معرّف قناة التقرير المفصل
+        const TELEGRAM_BOT_TOKEN = '8138541482:AAEMwUnhx_pHI1PxZn6oVS-naNp4jiL08TQ';
+        const SUMMARY_CHAT_ID = '@quranmytest';
+        const DETAILED_CHAT_ID = '-1001722914216';
 
         let currentUser = null;
         let allQuestions = [];
@@ -159,7 +253,7 @@
         let userAnswers = [];
         let quizSettings = {};
 
-        const hiddenPasswords = ["phy1234", "physics2023", "demo"];
+        const hiddenPasswords = ["math1234", "usame", "demo"];
 
         // --- عناصر DOM ---
         const pages = {
@@ -191,8 +285,26 @@
 
         // --- إعدادات MathJax ---
         window.MathJax = {
-            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
-            options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'] },
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                packages: {'[+]': ['ams', 'boldsymbol']}
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process',
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            },
+            loader: {load: ['[tex]/ams', '[tex]/boldsymbol']},
+            startup: {
+                typeset: false,
+                pageReady: function() {
+                    return MathJax.startup.defaultPageReady().then(function() {
+                        console.log('MathJax is ready');
+                    });
+                }
+            }
         };
 
         // --- الدوال الرئيسية ---
@@ -206,8 +318,8 @@
             const loadingDiv = document.getElementById('loadingQuestions');
             loadingDiv.classList.remove('hidden');
             quizSetup.classList.add('hidden');
-            const scriptUrl = 'https://script.google.com/macros/s/AKfycbx2-f_URxyFsfdymVqhM7huc1HjqeM7sUwMSSPy3MY2gP0EA0DvfVRGkvldtkrq2RsGEA/exec';
-            axios.get(scriptUrl )
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbzeJsY2c3DDjzWdoLyz-d72uzDXzkZq9m04o4xzc-t6vYi45Ya1gimPd1LQkbIdiUZdoQ/exec';
+            axios.get(scriptUrl)
                 .then(response => {
                     allQuestions = response.data;
                     const lessons = [...new Set(allQuestions.map(q => q.lesson))].filter(Boolean);
@@ -258,20 +370,28 @@
             let optionsHtml = '';
             for (let i = 1; i <= 4; i++) {
                 if (question[`option${i}`]) {
+                    const optionText = question[`option${i}`] || '';
                     optionsHtml += `
                         <label class="option-label">
                             <input type="radio" name="answer" value="${i}" ${userAnswers[currentQuestionIndex] === i ? 'checked' : ''}>
-                            <div class="option-text">${formatScientificText(question[`option${i}`])}</div>
+                            <div class="option-text">${formatScientificText(optionText)}</div>
                         </label>`;
                 }
             }
+            
+            const questionText = question.question || '';
             questionContainer.innerHTML = `
                 <div class="question">
-                    <h3>${formatScientificText(question.question)}</h3>
+                    <h3>${formatScientificText(questionText)}</h3>
                     ${question.image ? `<img src="${question.image}" alt="صورة السؤال" style="max-width:100%; border-radius: 8px; margin:15px 0;">` : ''}
                     <div class="options">${optionsHtml}</div>
                 </div>`;
-            if (window.MathJax) window.MathJax.typesetPromise();
+            
+            // إعادة معالجة الصيغ الرياضية بعد تحميل السؤال
+            if (window.MathJax) {
+                MathJax.typesetPromise().catch(err => console.log('Typeset error:', err));
+            }
+            
             prevButton.classList.toggle('hidden', currentQuestionIndex === 0);
             nextButton.classList.toggle('hidden', currentQuestionIndex === currentQuiz.length - 1);
             submitQuiz.classList.toggle('hidden', currentQuestionIndex < currentQuiz.length - 1);
@@ -288,7 +408,9 @@
             displayResults(resultsData);
             sendTelegramReports(resultsData);
             showPage('results');
-            if (window.MathJax) window.MathJax.typesetPromise();
+            if (window.MathJax) {
+                MathJax.typesetPromise().catch(err => console.log('Typeset error:', err));
+            }
             submitQuiz.disabled = false;
         }
 
@@ -333,11 +455,14 @@
             let reviewHtml = '<h3>مراجعة الإجابات:</h3>';
             currentQuiz.forEach((q, i) => {
                 const isCorrect = userAnswers[i] === parseInt(q.correctanswer);
+                const userAnswerText = userAnswers[i] ? (q[`option${userAnswers[i]}`] || '') : 'لم تجب';
+                const correctAnswerText = q[`option${parseInt(q.correctanswer)}`] || '';
+                
                 reviewHtml += `
                     <div class="question ${isCorrect ? 'correct' : 'incorrect'}">
-                        <p><strong>السؤال ${i + 1}:</strong> ${formatScientificText(q.question)}</p>
-                        <p><strong>إجابتك:</strong> <span class="math-answer">${userAnswers[i] ? formatScientificText(q[`option${userAnswers[i]}`]) : 'لم تجب'}</span></p>
-                        ${!isCorrect ? `<p><strong>الإجابة الصحيحة:</strong> <span class="math-answer">${formatScientificText(q[`option${parseInt(q.correctanswer)}`])}</span></p>` : ''}
+                        <p><strong>السؤال ${i + 1}:</strong> ${formatScientificText(q.question || '')}</p>
+                        <p><strong>إجابتك:</strong> <span class="math-answer">${formatScientificText(userAnswerText)}</span></p>
+                        ${!isCorrect ? `<p><strong>الإجابة الصحيحة:</strong> <span class="math-answer">${formatScientificText(correctAnswerText)}</span></p>` : ''}
                     </div>`;
             });
             answersReview.innerHTML = reviewHtml;
@@ -356,7 +481,7 @@
             const MAX_LENGTH = 4096;
             const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
             
-            if (text.length <= MAX_LENGTH ) {
+            if (text.length <= MAX_LENGTH) {
                 await axios.post(url, { chat_id: chatId, text, parse_mode: 'Markdown' }).catch(err => console.error("Telegram API Error:", err));
             } else {
                 const parts = text.match(new RegExp(`.{1,${MAX_LENGTH}}`, 'g')) || [];
@@ -383,7 +508,7 @@
             let detailedReport = `
 *🔍 تقرير مفصل لاختبار ${SUBJECT_NAME}*
 ========================
-*📚 عنوان الدرس:* ${details.lesson}
+*📚 الدرس المختار:* ${details.lesson}
 
 *📊 ملخص الأداء:*
 *▫️ عدد الأسئلة:* ${details.totalQuestions}
@@ -403,9 +528,9 @@
                 details.incorrectAnswersDetails.forEach((item, index) => {
                     detailedReport += `
 --------------------------------------
-*(${index + 1}) السؤال:* ${item.question.trim()}
-*🔴 إجابته الخاطئة:* \`${item.userAnswer.trim()}\`
-*🟢 الإجابة الصحيحة:* \`${item.correctAnswer.trim()}\`
+*(${index + 1}) السؤال:* ${item.question ? item.question.trim() : ''}
+*🔴 إجابته الخاطئة:* \`${item.userAnswer ? item.userAnswer.trim() : ''}\`
+*🟢 الإجابة الصحيحة:* \`${item.correctAnswer ? item.correctAnswer.trim() : ''}\`
 `;
                 });
             } else {
@@ -428,22 +553,44 @@
         }
         
         function formatScientificText(text) {
-            if (!text) return '';
+            if (typeof text !== 'string') return '';
             text = text.trim();
-            const regex = /(\$[\s\S]*?\$|\\\([\s\S]*?\\\)|[a-zA-Z0-9\^_+\-=\/\\{}\[\]*.,()]+)|([\u0600-\u06FF\s.,،؛؟]+)/g;
+            
+            // تحسين التعامل مع الصيغ الرياضية المعقدة
+            const regex = /(\$[\s\S]*?\$|\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\]|\^[0-9]+|\^\{[^}]+\}|_[a-zA-Z0-9]|\{[^}]+\}|\\[a-zA-Z]+|∫|∑|∏|√|π|θ|α|β|γ|δ|ε|ζ|η|θ|ι|κ|λ|μ|ν|ξ|ο|π|ρ|σ|τ|υ|φ|χ|ψ|ω|∞|≈|≠|≡|≤|≥|±|×|÷|∂|∆|∇|∈|∉|∩|∪|⊂|⊃|⊆|⊇|∧|∨|¬|∀|∃|∴|∵|∅|ℕ|ℤ|ℚ|ℝ|ℂ|ℍ|∈|∉|∋|∌|≈|≅|≜|≝|≐|≃|≪|≫|≲|≳|≶|≷|≺|≻|⊢|⊣|⊨|⊩|⊪|⊫|⊬|⊭|⊮|⊯|⋈|⋉|⋊|⋋|⋌|⋍|⋎|⋏|⋐|⋑|⋒|⋓|⋔|⋕|⋖|⋗|⋘|⋙|⋚|⋛|⋜|⋝|⋞|⋟|⋠|⋡|⋢|⋣|⋤|⋥|⋦|⋧|⋨|⋩|⋪|⋫|⋬|⋭|⋮|⋯|⋰|⋱|⋲|⋳|⋴|⋵|⋶|⋷|⋸|⋹|⋺|⋻|⋼|⋽|⋾|⋿|⌀|⌁|⌂|⌃|⌄|⌅|⌆|⌇|⌈|⌉|⌊|⌋|⌌|⌍|⌎|⌏|⌐|⌑|⌒|⌓|⌔|⌕|⌖|⌗|⌘|⌙|⌚|⌛|⌜|⌝|⌞|⌟|⌠|⌡|⌢|⌣|⌤|⌥|⌦|⌧|⌨|〈|〉|⌫|⌬|⌭|⌮|⌯|⌰|⌱|⌲|⌳|⌴|⌵|⌶|⌷|⌸|⌹|⌺|⌻|⌼|⌽|⌾|⌿|⍀|⍁|⍂|⍃|⍄|⍅|⍆|⍇|⍈|⍉|⍊|⍋|⍌|⍍|⍎|⍏|⍐|⍑|⍒|⍓|⍔|⍕|⍖|⍗|⍘|⍙|⍚|⍛|⍜|⍝|⍞|⍟|⍠|⍡|⍢|⍣|⍤|⍥|⍦|⍧|⍨|⍩|⍪|⍫|⍬|⍭|⍮|⍯|⍰|⍱|⍲|⍳|⍴|⍵|⍶|⍷|⍸|⍹|⍺|⎕|⏢|⏣|⏤|⏥|⏦|⏧|⏨|⏩|⏪|⏫|⏬|⏭|⏮|⏯|⏰|⏱|⏲|⏳|⏴|⏵|⏶|⏷|⏸|⏹|⏺|␀|␁|␂|␃|␄|␅|␆|␇|␈|␉|␊|␋|␌|␍|␎|␏|␐|␑|␒|␓|␔|␕|␖|␗|␘|␙|␚|␛|␜|␝|␞|␟|␠|␡|␢|␣|␤|␥|␦|⑀|⑁|⑂|⑃|⑄|⑅|⑆|⑇|⑈|⑉|⑊|①|②|③|④|⑤|⑥|⑦|⑧|⑨|⑩|⑪|⑫|⑬|⑭|⑮|⑯|⑰|⑱|⑲|⑳|⓪|⓫|⓬|⓭|⓮|⓯|⓰|⓱|⓲|⓳|⓴|⓵|⓶|⓷|⓸|⓹|⓺|⓻|⓼|⓽|⓾|⓿|─|━|│|┃|┄|┅|┆|┇|┈|┉|┊|┋|┌|┍|┎|┏|┐|┑|┒|┓|└|┕|┖|┗|┘|┙|┚|┛|├|┝|┞|┟|┠|┡|┢|┣|┤|┥|┦|┧|┨|┩|┪|┫|┬|┭|┮|┯|┰|┱|┲|┳|┴|┵|┶|┷|┸|┹|┺|┻|┼|┽|┾|┿|╀|╁|╂|╃|╄|╅|╆|╇|╈|╉|╊|╋|╌|╍|╎|╏|═|║|╒|╓|╔|╕|╖|╗|╘|╙|╚|╛|╜|╝|╞|╟|╠|╡|╢|╣|╤|╥|╦|╧|╨|╩|╪|╫|╬|╭|╮|╯|╰|╱|╲|╳|╴|╵|╶|╷|╸|╹|╺|╻|╼|╽|╾|╿|▀|▁|▂|▃|▄|▅|▆|▇|█|▉|▊|▋|▌|▍|▎|▏|▐|░|▒|▓|▔|▕|▖|▗|▘|▙|▚|▛|▜|▝|▞|▟|■|□|▢|▣|▤|▥|▦|▧|▨|▩|▪|▫|▬|▭|▮|▯|▰|▱|▲|△|▴|▵|▶|▷|▸|▹|►|▻|▼|▽|▾|▿|◀|◁|◂|◃|◄|◅|◆|◇|◈|◉|◊|○|◌|◍|◎|●|◐|◑|◒|◓|◔|◕|◖|◗|◘|◙|◚|◛|◜|◝|◞|◟|◠|◡|◢|◣|◤|◥|◦|◧|◨|◩|◪|◫|◬|◭|◮|◯|◰|◱|◲|◳|◴|◵|◶|◷|◸|◹|◺|◻|◼|◽|◾|◿|☀|☁|☂|☃|☄|★|☆|☇|☈|☉|☊|☋|☌|☍|☎|☏|☐|☑|☒|☓|☔|☕|☖|☗|☘|☙|☚|☛|☜|☝|☞|☟|☠|☡|☢|☣|☤|☥|☦|☧|☨|☩|☪|☫|☬|☭|☮|☯|☰|☱|☲|☳|☴|☵|☶|☷|☸|☹|☺|☻|☼|☽|☾|☿|♀|♁|♂|♃|♄|♅|♆|♇|♈|♉|♊|♋|♌|♍|♎|♏|♐|♑|♒|♓|♔|♕|♖|♗|♘|♙|♚|♛|♜|♝|♞|♟|♠|♡|♢|♣|♤|♥|♦|♧|♨|♩|♪|♫|♬|♭|♮|♯|♰|♱|♲|♳|♴|♵|♶|♷|♸|♹|♺|♻|♼|♽|♾|♿|⚀|⚁|⚂|⚃|⚄|⚅|⚆|⚇|⚈|⚉|⚊|⚋|⚌|⚍|⚎|⚏|⚐|⚑|⚒|⚓|⚔|⚕|⚖|⚗|⚘|⚙|⚚|⚛|⚜|⚝|⚞|⚟|⚠|⚡|⚢|⚣|⚤|⚥|⚦|⚧|⚨|⚩|⚪|⚫|⚬|⚭|⚮|⚯|⚰|⚱|⚲|⚳|⚴|⚵|⚶|⚷|⚸|⚹|⚺|⚻|⚼|⚽|⚾|⚿|⛀|⛁|⛂|⛃|⛄|⛅|⛆|⛇|⛈|⛉|⛊|⛋|⛌|⛍|⛎|⛏|⛐|⛑|⛒|⛓|⛔|⛕|⛖|⛗|⛘|⛙|⛚|⛛|⛜|⛝|⛞|⛟|⛠|⛡|⛢|⛣|⛤|⛥|⛦|⛧|⛨|⛩|⛪|⛫|⛬|⛭|⛮|⛯|⛰|⛱|⛲|⛳|⛴|⛵|⛶|⛷|⛸|⛹|⛺|⛻|⛼|⛽|⛾|⛿|✀|✁|✂|✃|✄|✅|✆|✇|✈|✉|✊|✋|✌|✍|✎|✏|✐|✑|✒|✓|✔|✕|✖|✗|✘|✙|✚|✛|✜|✝|✞|✟|✠|✡|✢|✣|✤|✥|✦|✧|✨|✩|✪|✫|✬|✭|✮|✯|✰|✱|✲|✳|✴|✵|✶|✷|✸|✹|✺|✻|✼|✽|✾|✿|❀|❁|❂|❃|❄|❅|❆|❇|❈|❉|❊|❋|❌|❍|❎|❏|❐|❑|❒|❓|❔|❕|❖|❗|❘|❙|❚|❛|❜|❝|❞|❟|❠|❡|❢|❣|❤|❥|❦|❧|❨|❩|❪|❫|❬|❭|❮|❯|❰|❱|❲|❳|❴|❵|❶|❷|❸|❹|❺|❻|❼|❽|❾|❿|➀|➁|➂|➃|➄|➅|➆|➇|➈|➉|➊|➋|➌|➍|➎|➏|➐|➑|➒|➓|➔|➕|➖|➗|➘|➙|➚|➛|➜|➝|➞|➟|➠|➡|➢|➣|➤|➥|➦|➧|➨|➩|➪|➫|➬|➭|➮|➯|➰|➱|➲|➳|➴|➵|➶|➷|➸|➹|➺|➻|➼|➽|➾|➿)/g;
+            
             let result = '';
             let match;
+            let lastIndex = 0;
+            
             while ((match = regex.exec(text)) !== null) {
-                if (match[1]) {
-                    let mathPart = match[1];
-                    if (!mathPart.startsWith('$') && !mathPart.startsWith('\\(')) {
-                        mathPart = `$${mathPart}$`;
-                    }
-                    result += `<span class="math-expression">${mathPart}</span>`;
-                } else if (match[2]) {
-                    result += `<span>${match[2]}</span>`;
+                // النص العادي قبل الصيغة الرياضية
+                if (match.index > lastIndex) {
+                    result += `<span>${text.substring(lastIndex, match.index)}</span>`;
                 }
+                
+                // الصيغة الرياضية
+                let mathPart = match[0];
+                
+                // معالجة الأسس والنصوص الفرعية
+                if (mathPart.startsWith('^') || mathPart.startsWith('_')) {
+                    mathPart = `$${mathPart}$`;
+                }
+                
+                // إضافة علامات $ إذا لم تكن موجودة
+                if (!mathPart.startsWith('$') && !mathPart.startsWith('\\(') && !mathPart.startsWith('\\[')) {
+                    mathPart = `$${mathPart}$`;
+                }
+                
+                result += `<span class="math-expression">${mathPart}</span>`;
+                lastIndex = match.index + match[0].length;
             }
+            
+            // إضافة أي نص متبقي بعد آخر صيغة رياضية
+            if (lastIndex < text.length) {
+                result += `<span>${text.substring(lastIndex)}</span>`;
+            }
+            
             return result || `<span>${text}</span>`;
         }
 
