@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>اختبار مادة الرياضيات والعلوم</title>
+    <title>اختبار مادة الرياضيات</title>
     
     <!-- Google Fonts: Cairo & Noto Sans Arabic -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,33 +18,32 @@
     <script>
         window.MathJax = {
             tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                inlineMath: [["$", "$"], ["\\(", "\\)"]],
+                displayMath: [["$$", "$$"], ["\\[", "\\]"]],
                 processEscapes: true,
                 processEnvironments: true,
-                packages: ['base', 'ams', 'noerrors', 'noundefined', 'mhchem', 'physics']
+                packages: ["base", "ams", "noerrors", "noundefined", "mhchem", "physics"]
             },
             chtml: {
                 scale: 1.1,
                 minScale: 0.5,
                 matchFontHeight: false,
-                displayAlign: 'left',
-                displayIndent: '0em'
+                displayAlign: "left",
+                displayIndent: "0em"
             },
             options: {
-                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-                ignoreHtmlClass: 'tex2jax_ignore',
-                processHtmlClass: 'tex2jax_process'
+                skipHtmlTags: ["script", "noscript", "style", "textarea", "pre"],
+                ignoreHtmlClass: "tex2jax_ignore",
+                processHtmlClass: "tex2jax_process"
             },
             startup: {
                 ready: () => {
                     MathJax.startup.defaultReady();
-                    console.log('MathJax is loaded and ready.');
+                    console.log("MathJax is loaded and ready.");
                 }
             }
         };
     </script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <style>
@@ -575,7 +574,7 @@
 <body>
     <div class="container">
         <div id="loginPage" class="page-transition">
-            <h1><i class="fas fa-graduation-cap"></i> اختبار مادة الرياضيات والعلوم</h1>
+            <h1><i class="fas fa-graduation-cap"></i> اختبار مادة الرياضيات </h1>
             <h2><i class="fas fa-sign-in-alt"></i> تسجيل الدخول</h2>
             <form id="loginForm">
                 <div class="form-group">
@@ -719,7 +718,7 @@
             loadingDiv.classList.remove('hidden');
             elements.quizSetup.classList.add('hidden');
             
-            const scriptUrl = 'https://script.google.com/macros/s/AKfycbyLu-Xh2IR_p7wS311t1QaYOjmE6GusAVzR3CoS-LmpN01gtEjJ2n51HV1dkZPUebp2cQ/exec';
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbyBnctgP3_kEkj0wk6fh_JHYRFPf-gjZIi07XZS5wnmld4s-kgrb0yHyXh580GYNFtkfg/exec';
             
             axios.get(scriptUrl)
                 .then(response => {
@@ -922,7 +921,7 @@
             return "📚 ضعيف جداً. ننصحك بالدراسة أكثر.";
         }
 
-        // --- دوال تليجرام المحسّنة ---
+        // --- نظام إرسال تقارير Telegram المحسن ---
         class TelegramReportingSystem {
             constructor(botToken, summaryChatId, detailedChatId) {
                 this.botToken = botToken;
@@ -936,7 +935,7 @@
 
             async sendMessage(chatId, text, options = {}) {
                 const defaultOptions = {
-                    parse_mode: 'Markdown',
+                    parse_mode: 'MarkdownV2', // استخدام MarkdownV2 لدعم أفضل للرموز الرياضية
                     disable_web_page_preview: true,
                     disable_notification: false
                 };
@@ -1073,14 +1072,28 @@
             }
 
             sanitizeText(text) {
-                let cleanText = text
-                    .replace(/\$[^$]*\$/g, '[معادلة رياضية]')
-                    .replace(/\\[a-zA-Z]+\{[^}]*\}/g, '[رمز رياضي]')
-                    .replace(/\\\([^)]*\\\)/g, '[معادلة رياضية]')
-                    .replace(/\\\[[^\]]*\\\]/g, '[معادلة رياضية]');
-
-                cleanText = cleanText.replace(/([_*\[\]()~`>#+\-=|{}.!])/g, '\\$1');
-                return cleanText.trim();
+                // استبدال الأحرف الخاصة التي تحتاج إلى تهريب في MarkdownV2
+                const specialChars = ['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!'];
+                
+                // الحفاظ على الرموز الرياضية بين علامات $
+                const parts = text.split(/(\$[^$]*\$)/);
+                let result = '';
+                
+                for (let i = 0; i < parts.length; i++) {
+                    if (i % 2 === 1) {
+                        // جزء بين علامات $ (معادلة رياضية)
+                        result += parts[i];
+                    } else {
+                        // جزء نص عادي
+                        let normalText = parts[i];
+                        for (const char of specialChars) {
+                            normalText = normalText.split(char).join(`\\${char}`);
+                        }
+                        result += normalText;
+                    }
+                }
+                
+                return result;
             }
 
             createSummaryReport(data) {
@@ -1100,11 +1113,11 @@
                 return `
 *📊 تقرير موجز لاختبار ${SUBJECT_NAME}*
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-*👤 المستخدم:* \`${data.username}\`
-*📚 الدرس:* ${data.lesson}
+*👤 المستخدم:* \`${this.sanitizeText(data.username)}\`
+*📚 الدرس:* ${this.sanitizeText(data.lesson)}
 *🎯 النتيجة:* ${data.correct} / ${data.totalQuestions} (*${data.percentage}%*)
 *⏱️ الوقت المستغرق:* ${timeString}
-*🏅 التقدير:* ${data.grade}
+*🏅 التقدير:* ${this.sanitizeText(data.grade)}
 *📅 التاريخ:* ${currentTime}
                 `.trim();
             }
@@ -1126,7 +1139,7 @@
                 let report = `
 *🔍 تقرير مفصل لاختبار ${SUBJECT_NAME}*
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-*📚 عنوان الدرس:* ${data.lesson}
+*📚 عنوان الدرس:* ${this.sanitizeText(data.lesson)}
 *📅 تاريخ الاختبار:* ${currentTime}
 
 *📊 ملخص الأداء:*
@@ -1137,7 +1150,7 @@
 *🎯 النتيجة النهائية:* ${data.correct} من ${data.totalQuestions}
 *📈 النسبة المئوية:* *${data.percentage}%*
 *⏱️ الوقت المستغرق:* ${timeString}
-*🏅 التقدير:* ${data.grade}
+*🏅 التقدير:* ${this.sanitizeText(data.grade)}
 `;
 
                 if (data.incorrect > 0 && data.incorrectAnswersDetails) {
@@ -1160,7 +1173,7 @@
                 } else {
                     report += `
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-*🎉 لم يتم تسجيل أي أخطاء. عمل رائع!*
+*🎉 لم يتم تسجيل أي أخطاء\\. عمل رائع\\!*
 `;
                 }
 
@@ -1242,7 +1255,10 @@
             text = text.replace(/\$([^$]+)\$/g, '<span class="math-expression">$$$1$$</span>');
             
             // معالجة الصيغ الكيميائية
-            text = text.replace(/([A-Z][a-z]?)(\d+)/g, '<span class="chemical-formula">$1<sub>$2</sub></span>');
+            text = text.replace(/([A-Z][a-z]?)(?:_(\d+)|(\d+))/g, (match, p1, p2, p3) => {
+                const subscript = p2 || p3;
+                return `<span class="chemical-formula">${p1}<sub>${subscript}</sub></span>`;
+            });
             
             // معالجة الوحدات الفيزيائية
             text = text.replace(/(\d+\.?\d*)\s*(m\/s|kg|N|J|W|V|A|Ω|Hz|Pa|°C|K|mol|cd|lm|lx)/g, 
@@ -1411,625 +1427,3 @@
     </script>
 </body>
 </html>
-
-
-    <!-- إضافة تحسينات جمالية إضافية -->
-    <style>
-        /* تحسينات جمالية إضافية */
-        
-        /* تأثيرات الجسيمات في الخلفية */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: linear-gradient(45deg, var(--primary-color), var(--info-color));
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
-            opacity: 0.6;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0px) rotate(0deg);
-                opacity: 0.6;
-            }
-            50% {
-                transform: translateY(-20px) rotate(180deg);
-                opacity: 1;
-            }
-        }
-
-        /* تحسين تأثيرات الأزرار */
-        button {
-            position: relative;
-            overflow: hidden;
-        }
-
-        button::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        button:active::after {
-            width: 300px;
-            height: 300px;
-        }
-
-        /* تحسين شريط التقدم */
-        .progress-bar {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .progress-bar::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, 
-                transparent 0%, 
-                rgba(255, 255, 255, 0.4) 50%, 
-                transparent 100%);
-            transform: translateX(-100%);
-            animation: shimmer 2s infinite;
-        }
-
-        @keyframes shimmer {
-            0% {
-                transform: translateX(-100%);
-            }
-            100% {
-                transform: translateX(100%);
-            }
-        }
-
-        /* تحسين بطاقات الأسئلة */
-        .question {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .question::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, 
-                var(--primary-color), 
-                var(--info-color), 
-                var(--success-color), 
-                var(--primary-color));
-            background-size: 400% 400%;
-            animation: gradientShift 4s ease infinite;
-            z-index: -1;
-            border-radius: var(--border-radius);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .question:hover::before {
-            opacity: 0.3;
-        }
-
-        @keyframes gradientShift {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
-        }
-
-        /* تحسين الخيارات */
-        .option-label {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .option-label::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, 
-                transparent, 
-                rgba(37, 99, 235, 0.1), 
-                transparent);
-            transition: left 0.5s;
-        }
-
-        .option-label:hover::after {
-            left: 100%;
-        }
-
-        /* تحسين النتائج */
-        .result {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .result::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at center, 
-                rgba(37, 99, 235, 0.1) 0%, 
-                transparent 70%);
-            animation: pulse 3s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 0.5;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 1;
-                transform: scale(1.05);
-            }
-        }
-
-        /* تحسين الرسائل */
-        .error, .loading {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .error::before, .loading::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, 
-                transparent, 
-                rgba(255, 255, 255, 0.2), 
-                transparent);
-            animation: slideIn 1.5s infinite;
-        }
-
-        @keyframes slideIn {
-            0% {
-                left: -100%;
-            }
-            100% {
-                left: 100%;
-            }
-        }
-
-        /* تحسين الأيقونات */
-        .fas, .far, .fab {
-            transition: all 0.3s ease;
-        }
-
-        .fas:hover, .far:hover, .fab:hover {
-            transform: scale(1.2) rotate(5deg);
-        }
-
-        /* تحسين الظلال */
-        .container {
-            box-shadow: 
-                0 20px 25px -5px rgba(0, 0, 0, 0.1),
-                0 10px 10px -5px rgba(0, 0, 0, 0.04),
-                0 0 0 1px rgba(255, 255, 255, 0.05);
-        }
-
-        /* تحسين الانتقالات بين الصفحات */
-        .page-transition {
-            animation: pageSlideIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        @keyframes pageSlideIn {
-            0% {
-                opacity: 0;
-                transform: translateY(50px) scale(0.95);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        /* تحسين الاستجابة للشاشات الصغيرة */
-        @media (max-width: 480px) {
-            .container {
-                margin: 5px;
-                padding: 20px;
-                border-radius: 12px;
-            }
-
-            h1 {
-                font-size: 1.8rem;
-            }
-
-            h2 {
-                font-size: 1.5rem;
-            }
-
-            .option-label {
-                padding: 12px 15px;
-                margin-bottom: 8px;
-            }
-
-            .question {
-                padding: 20px;
-            }
-
-            button {
-                padding: 12px 18px;
-                font-size: 16px;
-            }
-        }
-
-        /* تحسين إمكانية الوصول */
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-
-        /* تحسين التباين العالي */
-        @media (prefers-contrast: high) {
-            :root {
-                --primary-color: #0066cc;
-                --success-color: #006600;
-                --error-color: #cc0000;
-                --gray-border: #666666;
-            }
-
-            .option-label {
-                border-width: 3px;
-            }
-
-            .question {
-                border-width: 3px;
-            }
-        }
-
-        /* تحسين الطباعة */
-        @media print {
-            .container {
-                box-shadow: none;
-                background: white;
-            }
-
-            button, .btn-group {
-                display: none;
-            }
-
-            .progress-bar {
-                display: none;
-            }
-
-            .question {
-                break-inside: avoid;
-                margin-bottom: 20px;
-            }
-        }
-
-        /* إضافة تأثيرات خاصة للنجاح */
-        .success-animation {
-            animation: successPulse 1s ease-in-out;
-        }
-
-        @keyframes successPulse {
-            0% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.7);
-            }
-            70% {
-                transform: scale(1.05);
-                box-shadow: 0 0 0 10px rgba(5, 150, 105, 0);
-            }
-            100% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(5, 150, 105, 0);
-            }
-        }
-
-        /* إضافة تأثيرات خاصة للخطأ */
-        .error-animation {
-            animation: errorShake 0.5s ease-in-out;
-        }
-
-        @keyframes errorShake {
-            0%, 100% {
-                transform: translateX(0);
-            }
-            10%, 30%, 50%, 70%, 90% {
-                transform: translateX(-10px);
-            }
-            20%, 40%, 60%, 80% {
-                transform: translateX(10px);
-            }
-        }
-
-        /* تحسين المؤشرات البصرية */
-        .visual-indicator {
-            position: relative;
-        }
-
-        .visual-indicator::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            right: -30px;
-            width: 0;
-            height: 0;
-            border-left: 8px solid var(--primary-color);
-            border-top: 6px solid transparent;
-            border-bottom: 6px solid transparent;
-            transform: translateY(-50%);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .visual-indicator:hover::after {
-            opacity: 1;
-        }
-
-        /* تحسين التركيز */
-        *:focus {
-            outline: 3px solid var(--primary-color);
-            outline-offset: 2px;
-        }
-
-        /* تحسين التمرير */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--gray-100);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary-color);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-hover);
-        }
-    </style>
-
-    <!-- إضافة سكريبت للتحسينات الجمالية -->
-    <script>
-        // إضافة جسيمات متحركة في الخلفية
-        function createParticles() {
-            const particlesContainer = document.createElement('div');
-            particlesContainer.className = 'particles';
-            document.body.appendChild(particlesContainer);
-
-            for (let i = 0; i < 20; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 6 + 's';
-                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
-                particlesContainer.appendChild(particle);
-            }
-        }
-
-        // إضافة تأثيرات صوتية (اختيارية)
-        function playSound(type) {
-            // يمكن إضافة أصوات للتفاعل
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-
-            if (type === 'success') {
-                oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
-                oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
-                oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
-            } else if (type === 'error') {
-                oscillator.frequency.setValueAtTime(220, audioContext.currentTime); // A3
-                oscillator.frequency.setValueAtTime(196, audioContext.currentTime + 0.1); // G3
-            } else {
-                oscillator.frequency.setValueAtTime(440, audioContext.currentTime); // A4
-            }
-
-            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.3);
-        }
-
-        // تحسين تجربة المستخدم
-        function enhanceUserExperience() {
-            // إضافة تأثيرات للنقر على الأزرار
-            document.addEventListener('click', function(e) {
-                if (e.target.tagName === 'BUTTON') {
-                    e.target.style.transform = 'scale(0.95)';
-                    setTimeout(() => {
-                        e.target.style.transform = '';
-                    }, 150);
-                }
-            });
-
-            // إضافة تأثيرات للخيارات
-            document.addEventListener('change', function(e) {
-                if (e.target.type === 'radio') {
-                    const label = e.target.closest('.option-label');
-                    if (label) {
-                        label.classList.add('success-animation');
-                        setTimeout(() => {
-                            label.classList.remove('success-animation');
-                        }, 1000);
-                    }
-                }
-            });
-
-            // إضافة مؤشر التحميل المحسن
-            const originalShowPage = window.showPage;
-            window.showPage = function(pageName) {
-                document.body.style.opacity = '0.7';
-                setTimeout(() => {
-                    originalShowPage(pageName);
-                    document.body.style.opacity = '1';
-                }, 200);
-            };
-        }
-
-        // تحسين الأداء
-        function optimizePerformance() {
-            // تأخير تحميل الصور
-            const images = document.querySelectorAll('img[data-src]');
-            const imageObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        img.src = img.dataset.src;
-                        img.removeAttribute('data-src');
-                        imageObserver.unobserve(img);
-                    }
-                });
-            });
-
-            images.forEach(img => imageObserver.observe(img));
-
-            // تحسين الذاكرة
-            window.addEventListener('beforeunload', function() {
-                // تنظيف المتغيرات
-                allQuestions = null;
-                currentQuiz = null;
-                userAnswers = null;
-            });
-        }
-
-        // إضافة إيماءات اللمس للأجهزة المحمولة
-        function addTouchGestures() {
-            let startX = 0;
-            let startY = 0;
-
-            document.addEventListener('touchstart', function(e) {
-                startX = e.touches[0].clientX;
-                startY = e.touches[0].clientY;
-            });
-
-            document.addEventListener('touchend', function(e) {
-                if (!pages.quiz.classList.contains('hidden')) {
-                    const endX = e.changedTouches[0].clientX;
-                    const endY = e.changedTouches[0].clientY;
-                    const diffX = startX - endX;
-                    const diffY = startY - endY;
-
-                    // التمرير الأفقي للتنقل بين الأسئلة
-                    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
-                        if (diffX > 0) {
-                            // التمرير لليسار - السؤال التالي
-                            if (!elements.nextButton.classList.contains('hidden')) {
-                                elements.nextButton.click();
-                            }
-                        } else {
-                            // التمرير لليمين - السؤال السابق
-                            if (!elements.prevButton.classList.contains('hidden')) {
-                                elements.prevButton.click();
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        // تشغيل التحسينات عند تحميل الصفحة
-        document.addEventListener('DOMContentLoaded', function() {
-            createParticles();
-            enhanceUserExperience();
-            optimizePerformance();
-            addTouchGestures();
-
-            // إضافة مؤشر الاتصال
-            window.addEventListener('online', function() {
-                const indicator = document.createElement('div');
-                indicator.textContent = '✅ تم استعادة الاتصال';
-                indicator.style.cssText = `
-                    position: fixed;
-                    top: 20px;
-                    right: 20px;
-                    background: var(--success-color);
-                    color: white;
-                    padding: 10px 20px;
-                    border-radius: 8px;
-                    z-index: 1000;
-                    animation: slideInRight 0.5s ease;
-                `;
-                document.body.appendChild(indicator);
-                setTimeout(() => indicator.remove(), 3000);
-            });
-
-            window.addEventListener('offline', function() {
-                const indicator = document.createElement('div');
-                indicator.textContent = '⚠️ انقطع الاتصال بالإنترنت';
-                indicator.style.cssText = `
-                    position: fixed;
-                    top: 20px;
-                    right: 20px;
-                    background: var(--error-color);
-                    color: white;
-                    padding: 10px 20px;
-                    border-radius: 8px;
-                    z-index: 1000;
-                    animation: slideInRight 0.5s ease;
-                `;
-                document.body.appendChild(indicator);
-            });
-        });
-
-        // إضافة الرسوم المتحركة للانتقالات
-        const slideInRightKeyframes = `
-            @keyframes slideInRight {
-                from {
-                    transform: translateX(100%);
-                    opacity: 0;
-                }
-                to {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-            }
-        `;
-        const animationStyle = document.createElement('style');
-        animationStyle.textContent = slideInRightKeyframes;
-        document.head.appendChild(animationStyle);
-    </script>
-
